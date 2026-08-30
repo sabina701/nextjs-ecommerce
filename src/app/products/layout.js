@@ -3,12 +3,13 @@ import Banner from "../components/products/Banner";
 
 const layout = ({ children }) => {
   return (
-    <div>
-      <Banner />
-      <section className="py-16">
+    <section className="py-10">
+      <div>
+        <Banner />
+
         <div className="container mx-auto px-6">{children}</div>
-      </section>
-    </div>
+      </div>
+    </section>
   );
 };
 

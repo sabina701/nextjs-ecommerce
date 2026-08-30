@@ -10,10 +10,10 @@ export const metadata = {
 
 const RootLayout = ({ children }) => {
   return (
-    <html>
+    <html className="font-serif">
       <body>
         <Header />
-        {children}
+        <main className="min-h-screen"> {children}</main>
         <Footer />
       </body>
     </html>
