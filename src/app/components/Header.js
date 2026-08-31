@@ -1,7 +1,5 @@
 import React from "react";
-import Link from "next/link";
-import { HOME_ROUTE } from "../constants/routes";
-import navlinks from "../constants/navlink";
+import Logo from "./Logo";
 import {
   FaBars,
   FaLaptop,
@@ -13,16 +11,11 @@ import Navlink from "./Navlink";
 const Header = () => {
   return (
     <div>
-      <header className="w-full bg-white dark:bg-gray-900 sticky top-0 shadow z-50">
+      <header className="fixed top-0 left-0 z-50 w-full bg-white shadow dark:bg-gray-900">
         <div className="container mx-auto py-3 px-4">
-          <div className="flex items-center justify-between">
+          <div className="flex  fixeditems-center justify-between">
             {/* Logo */}
-            <h1 className="text-xl font-semibold text-primary">
-              <Link href={HOME_ROUTE} className="flex items-center gap-2">
-                <FaLaptop />
-                Techno
-              </Link>
-            </h1>
+            <Logo />
 
             {/* Navbar */}
             <Navlink />
