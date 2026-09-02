@@ -43,7 +43,7 @@ const ProductsFilter = () => {
   }
 
   return (
-    <aside className="shadow-md py-8 px-6 rounded-xl">
+    <aside className="shadow-md py-8 px-6 rounded-xl bg-white dark:bg-gray-800">
       <h3 className="font-semibold text-xl">Products Filter</h3>
       <div className="py-3">
         <h4 className="mb-1 font-semibold">Search</h4>

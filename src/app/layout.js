@@ -1,20 +1,30 @@
+"use client";
 import React from "react";
 import Header from "./components/Header";
 import "./globals.css";
 import Footer from "./components/Footer";
-import config from "./config/config";
-export const metadata = {
-  title: config.appName,
-  description: "Electronics e-commerce,online shopping",
-};
+
+import AppProvider from "@/redux/provider";
+import MainLayout from "./layouts/MainLayout";
+// export const metadata = {
+//   title: config.appName,
+//   description: "Electronics e-commerce,online shopping",
+// };
 
 const RootLayout = ({ children }) => {
   return (
     <html className="font-serif">
       <body>
-        <Header />
-        <main className="min-h-screen"> {children}</main>
-        <Footer />
+        <AppProvider>
+          <MainLayout>
+            <Header />
+            <main className="min-h-screen dark:bg-gray-900 dark:text-white ">
+              {" "}
+              {children}
+            </main>
+            <Footer />
+          </MainLayout>
+        </AppProvider>
       </body>
     </html>
   );
