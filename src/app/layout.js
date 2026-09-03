@@ -6,6 +6,8 @@ import Footer from "./components/Footer";
 
 import AppProvider from "@/redux/provider";
 import MainLayout from "./layouts/MainLayout";
+import ToastProvider from "./components/ToastProvider";
+
 // export const metadata = {
 //   title: config.appName,
 //   description: "Electronics e-commerce,online shopping",
@@ -24,6 +26,7 @@ const RootLayout = ({ children }) => {
             </main>
             <Footer />
           </MainLayout>
+          <ToastProvider />
         </AppProvider>
       </body>
     </html>

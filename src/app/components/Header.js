@@ -3,6 +3,7 @@ import Logo from "./Logo";
 import { FaBars, FaShoppingCart, FaUser } from "react-icons/fa";
 import Navlink from "./Navlink";
 import ThemeToggler from "./ThemeToggler";
+import User from "./User";
 const Header = () => {
   return (
     <div>
@@ -16,7 +17,7 @@ const Header = () => {
             <Navlink />
 
             {/* Right-side buttons */}
-            <div className="flex items-center">
+            <div className="flex items-center gap-2">
               {/* Dark mode */}
               <ThemeToggler />
 
@@ -26,9 +27,7 @@ const Header = () => {
               </button>
 
               {/* User */}
-              <button className="text-gray-700 px-2 py-1 dark:text-gray-300 hover:text-primary">
-                <FaUser />
-              </button>
+              <User />
 
               {/* Mobile menu */}
               <button className="block md:hidden text-gray-700 px-2 py-1 dark:text-gray-300">

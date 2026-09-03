@@ -1,6 +1,6 @@
 import React from "react";
 import { FaImage, FaShoppingCart } from "react-icons/fa";
-
+import ProductsFilter from "../components/products/Filter";
 export const LoadingCard = () => {
   return (
     <div className="relative bg-white dark:bg-gray-800 rounded-xl shadow-md overflow-hidden hover:-translate-y-1 transition duration-300">
@@ -31,16 +31,19 @@ export const LoadingCard = () => {
 
 const productLoading = () => {
   return (
-    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5">
-      <LoadingCard />
-      <LoadingCard />
-      <LoadingCard />
-      <LoadingCard />
-      <LoadingCard />
-      <LoadingCard />
-      <LoadingCard />
-      <LoadingCard />
-    </div>
+    <section className="grid grid-cols-1 md:grid-cols-[1fr_2fr] xl:grid-cols-[1fr_4fr] gap-8">
+      <ProductsFilter />
+      <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-5">
+        <LoadingCard />
+        <LoadingCard />
+        <LoadingCard />
+        <LoadingCard />
+        <LoadingCard />
+        <LoadingCard />
+        <LoadingCard />
+        <LoadingCard />
+      </div>
+    </section>
   );
 };
 

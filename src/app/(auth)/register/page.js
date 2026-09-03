@@ -1,22 +1,27 @@
 "use client";
 import { LOGIN_ROUTE } from "@/app/constants/routes";
-import React from "react";
+import React, { useEffect } from "react";
 import Logo from "@/app/components/Logo";
 import Link from "next/link";
 import { useForm } from "react-hook-form";
-import { signUp } from "@/api/auth";
+import Spinner from "@/app/components/Spinner";
+import { useDispatch } from "react-redux";
+import { registerUser } from "@/redux/auth/authAction";
+import { toast } from "react-toastify";
+import { useSelector } from "react-redux";
+import PasswordInput from "@/app/components/form/PasswordInput";
 
 const registerPage = () => {
   const { register, handleSubmit } = useForm();
+  const { loading, error } = useSelector((state) => state.auth);
+  const dispatch = useDispatch();
   async function submitForm(data) {
-    try {
-      const result = await signUp(data);
-      localStorage.setItem("authToken", result.token);
-      console.log(result);
-    } catch (error) {
-      console.log(error.response?.data);
-    }
+    dispatch(registerUser(data));
   }
+
+  useEffect(() => {
+    if (error) toast.error(error);
+  }, [error]);
   return (
     <div className="flex mt-20 items-center justify-center w-full px-4">
       <div className="flex  w-full flex-col max-w-96 ">
@@ -86,20 +91,14 @@ const registerPage = () => {
           <div className="mt-4">
             <label className="font-medium">Password</label>
 
-            <input
-              placeholder="Please enter your password"
-              className="mt-1 rounded-md ring ring-gray-200 focus:ring-2 focus:ring-indigo-600 outline-none px-3 py-3 w-full"
-              required
-              type="password"
-              {...register("password")}
-            />
+            <PasswordInput {...register("password")} />
           </div>
 
           <button
             type="submit"
-            className="mt-5 py-2 md:mt-2 w-full cursor-pointer rounded-md bg-indigo-600 text-white transition hover:bg-indigo-700"
+            className="flex items-center justify-center gap-3 disabled:opacity-80 mt-5 py-2 md:mt-2 w-full cursor-pointer rounded-md bg-indigo-600 text-white transition hover:bg-indigo-700"
           >
-            Register
+            Register{loading && <Spinner className=" fill primary" />}
           </button>
 
           <p className="text-center py-8">

@@ -1,22 +1,30 @@
 "use client";
-import React from "react";
+import React, { useEffect } from "react";
 import Link from "next/link";
 import { REGISTER_ROUTE } from "@/app/constants/routes";
 import Logo from "@/app/components/Logo";
 import { useForm } from "react-hook-form";
-import { login } from "@/api/auth.js";
+import { toast } from "react-toastify";
+import { useDispatch } from "react-redux";
+import { loginUser } from "@/redux/auth/authAction";
+import { useSelector } from "react-redux";
+import Spinner from "@/app/components/Spinner";
+import PasswordInput from "@/app/components/form/PasswordInput";
 
 const loginPage = () => {
   const { register, handleSubmit } = useForm();
-  async function submitForm(data) {
-    try {
-      const result = await login(data);
-      localStorage.setItem("authToken", result.token);
-      console.log(result);
-    } catch (error) {
-      console.log(error.response?.data);
-    }
+  const { loading, error, user } = useSelector((state) => state.auth);
+  const dispatch = useDispatch();
+  function submitForm(data) {
+    dispatch(loginUser(data));
   }
+  useEffect(() => {
+    if (error) {
+      toast.error(error);
+    }
+    console.log(error);
+  }, [error]);
+
   return (
     <div className="flex mt-23 items-center justify-center w-full px-4">
       <div className="flex  w-full flex-col max-w-96 gap-5">
@@ -43,20 +51,15 @@ const loginPage = () => {
           <div className="mt-6">
             <label className="font-medium">Password</label>
 
-            <input
-              placeholder="Please enter your password"
-              className="mt-2 rounded-md ring ring-gray-200 focus:ring-2 focus:ring-indigo-600 outline-none px-3 py-3 w-full"
-              required
-              type="password"
-              {...register("password")}
-            />
+            <PasswordInput {...register("password")} />
           </div>
 
           <button
             type="submit"
-            className="mt-8 py-3 w-full cursor-pointer rounded-md bg-indigo-600 text-white transition hover:bg-indigo-700"
+            disabled={loading}
+            className=" flex items-center justify-center gap-3 mt-8 py-3 w-full cursor-pointer rounded-md bg-indigo-600 text-white transition hover:bg-indigo-700 disabled:opacity-80"
           >
-            Login
+            login{loading && <Spinner className=" fill primary" />}
           </button>
 
           <p className="text-center py-8">
