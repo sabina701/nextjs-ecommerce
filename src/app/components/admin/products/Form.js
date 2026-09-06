@@ -3,13 +3,21 @@ import React, { useState } from "react";
 import { useForm } from "react-hook-form";
 import { useCallback } from "react";
 import { useDropzone } from "react-dropzone";
-import { FaTimes } from "react-icons/fa";
+import { FaPlus, FaTimes } from "react-icons/fa";
 import Image from "next/image";
+import { addProduct } from "@/api/product";
+import { toast } from "react-toastify";
+import { useRouter } from "next/navigation";
+import Spinner from "../../Spinner";
 
 const ProductForm = () => {
   const { register, handleSubmit } = useForm();
   const [selectedImages, setSelectedImages] = useState([]);
+  const [imageFiles, setImageFiles] = useState([]);
+  const [loading, setLoading] = useState(false);
+  const router = useRouter();
   const onDrop = useCallback((acceptedFiles) => {
+    setImageFiles(acceptedFiles);
     const images = acceptedFiles.map((file) => ({
       ...file,
       name: file.name,
@@ -19,9 +27,30 @@ const ProductForm = () => {
   }, []);
   function removeImages(index) {
     setSelectedImages((prev) => prev.filter((_, i) => i != index));
+    setImageFiles((prev) => prev.filter((_, i) => i != index));
   }
 
-  function submitForm() {}
+  function submitForm(data) {
+    setLoading(true);
+    const formdata = new FormData();
+    formdata.append("name", data.name);
+    formdata.append("brand", data.brand);
+    formdata.append("category", data.category);
+    formdata.append("price", data.price);
+    formdata.append("stock", data.stock ?? 1);
+
+    if (data.description) formdata.append("description", data.description);
+    if (imageFiles.length > 0) {
+      imageFiles.map((file) => formdata.append("images", file));
+    }
+    addProduct(formdata)
+      .then((data) => {
+        toast.success("Product created successfully");
+        router.back();
+      })
+      .catch((error) => toast.error(error.response?.data?.message))
+      .finally(() => setLoading(false));
+  }
   const { getRootProps, getInputProps } = useDropzone({ onDrop });
   return (
     <form onSubmit={handleSubmit(submitForm)}>
@@ -116,7 +145,6 @@ const ProductForm = () => {
             id="stock"
             className="bg-gray-50 focus:ring-1 focus:ring-primary/20 outline-primary border border-gray-300 text-gray-900 text-sm rounded-lg  focus:border-primary-200 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white  dark:focus:border-primary-500"
             placeholder="10"
-            required
             {...register("stock")}
           />
         </div>
@@ -130,7 +158,7 @@ const ProductForm = () => {
           <div className="flex items-center justify-center w-full">
             <div
               {...getRootProps()}
-              className="flex flex-col items-center justify-center rounded-lg w-full  bg-neutral-secondary-medium rounded-base cursor-pointer hover:bg-gray-50  bg-gray-50 focus:ring-1 focus:ring-primary/20 outline-primary border border-gray-300 text-gray-900 text-sm rounded-lg  focus:border-primary-200 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white  dark:focus:border-primary-500"
+              className="flex flex-col items-center justify-center rounded-lg w-full  bg-neutral-secondary-medium rounded-base cursor-pointer hover:bg-gray-50  bg-gray-50 focus:ring-1 focus:ring-primary/20 outline-primary border border-gray-300 text-gray-900 text-sm rounded-lg  focus:border-primary-200 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white  dark:focus:border-primary-500 dark:bg-gray-700 dark:hover:bg-gray-600"
             >
               <div className="flex flex-col items-center justify-center text-body py-10">
                 <svg
@@ -213,9 +241,11 @@ const ProductForm = () => {
       {/* Submit Button */}
       <button
         type="submit"
-        className="inline-flex items-center px-5 py-2.5 mt-4 sm:mt-6 text-sm font-medium text-center text-white bg-primary rounded-lg focus:ring-4 focus:ring-primary-200 dark:focus:ring-primary-900 hover:bg-primary-800/ cursor-pointer"
+        disabled={loading}
+        className="inline-flex disabled:opacity-80 items-center px-5 py-2.5 mt-4 sm:mt-6 text-sm font-medium text-center text-white bg-primary rounded-lg focus:ring-4 focus:ring-primary-200 dark:focus:ring-primary-900 hover:bg-primary-800/ cursor-pointer"
       >
-        Add product
+        <span className="mr-2">Add product</span>
+        {loading ? <Spinner className="h-5 w-5 fill-primary" /> : <FaPlus />}
       </button>
     </form>
   );
