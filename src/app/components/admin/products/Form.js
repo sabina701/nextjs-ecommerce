@@ -5,13 +5,21 @@ import { useCallback } from "react";
 import { useDropzone } from "react-dropzone";
 import { FaPlus, FaTimes } from "react-icons/fa";
 import Image from "next/image";
-import { addProduct } from "@/api/product";
+import { addProduct, updateProduct } from "@/api/product";
 import { toast } from "react-toastify";
 import { useRouter } from "next/navigation";
 import Spinner from "../../Spinner";
 
-const ProductForm = () => {
-  const { register, handleSubmit } = useForm();
+const ProductForm = ({ product }) => {
+  const { register, handleSubmit } = useForm({
+    values: {
+      name: product?.name || "",
+      brand: product?.brand || "",
+      category: product?.category || "",
+      price: product?.price || "",
+      stock: product?.stock || "",
+    },
+  });
   const [selectedImages, setSelectedImages] = useState([]);
   const [imageFiles, setImageFiles] = useState([]);
   const [loading, setLoading] = useState(false);
@@ -30,7 +38,7 @@ const ProductForm = () => {
     setImageFiles((prev) => prev.filter((_, i) => i != index));
   }
 
-  function submitForm(data) {
+  async function submitForm(data) {
     setLoading(true);
     const formdata = new FormData();
     formdata.append("name", data.name);
@@ -43,13 +51,22 @@ const ProductForm = () => {
     if (imageFiles.length > 0) {
       imageFiles.map((file) => formdata.append("images", file));
     }
-    addProduct(formdata)
-      .then((data) => {
+
+    try {
+      if (product) {
+        await updateProduct(product._id, formdata);
+        toast.success("Product updated successfully");
+      } else {
+        await addProduct(formdata);
         toast.success("Product created successfully");
-        router.back();
-      })
-      .catch((error) => toast.error(error.response?.data?.message))
-      .finally(() => setLoading(false));
+      }
+      router.back();
+      router.refresh();
+    } catch (error) {
+      toast.error(error.response?.data?.message);
+    } finally {
+      setLoading(false);
+    }
   }
   const { getRootProps, getInputProps } = useDropzone({ onDrop });
   return (
@@ -244,7 +261,9 @@ const ProductForm = () => {
         disabled={loading}
         className="inline-flex disabled:opacity-80 items-center px-5 py-2.5 mt-4 sm:mt-6 text-sm font-medium text-center text-white bg-primary rounded-lg focus:ring-4 focus:ring-primary-200 dark:focus:ring-primary-900 hover:bg-primary-800/ cursor-pointer"
       >
-        <span className="mr-2">Add product</span>
+        <span className="mr-2">
+          {product ? "Update Product" : "Add Product"}
+        </span>
         {loading ? <Spinner className="h-5 w-5 fill-primary" /> : <FaPlus />}
       </button>
     </form>
