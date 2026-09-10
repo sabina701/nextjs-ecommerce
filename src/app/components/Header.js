@@ -4,6 +4,9 @@ import { FaBars, FaShoppingCart, FaUser } from "react-icons/fa";
 import Navlink from "./Navlink";
 import ThemeToggler from "./ThemeToggler";
 import User from "./User";
+import Link from "next/link";
+import { CART_ROUTE } from "../constants/routes";
+import HeaderCart from "./HeaderCart";
 const Header = () => {
   return (
     <div>
@@ -21,10 +24,7 @@ const Header = () => {
               {/* Dark mode */}
               <ThemeToggler />
 
-              {/* Shopping cart */}
-              <button className="text-gray-700 px-2 py-1 dark:text-gray-300 hover:text-primary">
-                <FaShoppingCart />
-              </button>
+              <HeaderCart />
 
               {/* User */}
               <User />

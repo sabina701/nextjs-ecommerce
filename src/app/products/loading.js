@@ -1,5 +1,6 @@
 import React from "react";
-import { FaImage, FaShoppingCart } from "react-icons/fa";
+import { FaImage } from "react-icons/fa";
+import { MdOutlineAddShoppingCart } from "react-icons/md";
 import ProductsFilter from "../components/products/Filter";
 export const LoadingCard = () => {
   return (
@@ -20,8 +21,9 @@ export const LoadingCard = () => {
             <div className="bg-gray-200 w-24 h-5"></div>
             <div className="bg-gray-100 w-20 h-4 ml-1"></div>
           </div>
-          <button className="min-w-10 text-lg h-10 bg-primary text-white hover:bg-secondary px-2.5 py-2 rounded-full">
-            <FaShoppingCart />
+
+          <button className="min-w-10 text-lg h-10 bg-primary text-white hover:bg-secondary px-2.5 py-2 rounded-full cursor-pointer px-3 ">
+            <MdOutlineAddShoppingCart />
           </button>
         </div>
       </div>

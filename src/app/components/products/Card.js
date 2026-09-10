@@ -2,21 +2,28 @@ import Image from "next/image";
 import React from "react";
 import Link from "next/link";
 import { PRODUCTS_ROUTE } from "@/app/constants/routes";
-import { FaShoppingCart } from "react-icons/fa";
+import { FaImage, FaShoppingCart } from "react-icons/fa";
 import productBanner from "@/app/assets/images/productBanner.jpg";
+import AddToCart from "./AddToCart";
 
 const Card = ({ id, name, price, brand, category, imageUrls }) => {
   return (
     <>
       <div className="bg-white dark:bg-gray-800 rounded-xl shadow-md overflow-hidden hover:-translate-y-1 transition duration-300">
         <Link href={`${PRODUCTS_ROUTE}/${id}`} className="relative">
-          <Image
-            src={imageUrls?.[0] || productBanner}
-            alt={name}
-            className="w-full h-48 object-cover"
-            height={400}
-            width={600}
-          />
+          {imageUrls.length > 0 ? (
+            <Image
+              src={imageUrls?.[0] || productBanner}
+              alt={name}
+              className="w-full h-48 object-cover"
+              height={400}
+              width={600}
+            />
+          ) : (
+            <div className="w-full h-48 bg-gray-100 flex items-center justify-center">
+              <FaImage className="text-gray-300 text-7xl" />
+            </div>
+          )}
 
           <span className="absolute top-3 right-3 bg-primary text-white text-xs font-medium px-2 py-1 rounded-xl">
             {brand}
@@ -50,9 +57,7 @@ const Card = ({ id, name, price, brand, category, imageUrls }) => {
               </span>
             </div>
 
-            <button className="min-w-10 text-lg h-10 bg-primary text-white hover:bg-secondary px-2.5 py-2 rounded-full">
-              <FaShoppingCart />
-            </button>
+            <AddToCart product={{ id, name, price, imageUrls }} />
           </div>
         </div>
       </div>
