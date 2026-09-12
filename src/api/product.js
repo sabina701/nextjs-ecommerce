@@ -1,6 +1,7 @@
 import config from "@/app/config/config";
 import formatQuery from "@/helpers/queryFormatter";
 import axios from "axios";
+import api from "@/api/index";
 
 export const getProducts = async (searchParams) => {
   const query = formatQuery(await searchParams);
@@ -10,10 +11,7 @@ export const getProducts = async (searchParams) => {
 };
 
 export const addProduct = async (data) => {
-  const authToken = localStorage.getItem("authToken");
-  const response = await axios.post(`${config.apiUrl}/api/products`, data, {
-    headers: { Authorization: `Bearer ${authToken}` },
-  });
+  const response = await api.post(`/api/products`, data);
   return response.data;
 };
 
@@ -22,26 +20,11 @@ export const getProductById = async (id) => {
   return response.data;
 };
 export const updateProduct = async (id, data) => {
-  const authToken = localStorage.getItem("authToken");
-  const response = await axios.put(
-    `${config.apiUrl}/api/products/${id}`,
-    data,
-    {
-      headers: {
-        Authorization: `Bearer ${authToken}`,
-      },
-    },
-  );
+  const response = await api.put(`/api/products/${id}`, data);
   return response.data;
 };
 export const deleteProduct = async (id) => {
-  const authToken = localStorage.getItem("authToken");
-
-  const response = await axios.delete(`${config.apiUrl}/api/products/${id}`, {
-    headers: {
-      Authorization: `Bearer ${authToken}`,
-    },
-  });
+  const response = await api.delete(`/api/products/${id}`, {});
 
   return response.data;
 };

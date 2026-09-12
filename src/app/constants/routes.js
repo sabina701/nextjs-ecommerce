@@ -10,6 +10,7 @@ export const RESET_PASSWORD_ROUTE = "/reset-password";
 
 export const PROFILE_ROUTE = "/profile";
 export const CART_ROUTE = "/cart";
+export const ORDERS_ROUTE = "/orders";
 
 //Admin Routes
 export const DASHBOARD_ROUTE = "/dashboard";

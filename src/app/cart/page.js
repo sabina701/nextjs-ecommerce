@@ -4,7 +4,7 @@ import Image from "next/image";
 import Link from "next/link";
 import React from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { PRODUCTS_ROUTE } from "../constants/routes";
+import { ORDERS_ROUTE, PRODUCTS_ROUTE } from "../constants/routes";
 import {
   FaArrowRight,
   FaImage,
@@ -14,21 +14,50 @@ import {
 } from "react-icons/fa";
 import { FaXmark } from "react-icons/fa6";
 import {
+  clearCart,
   decreaseQuantity,
   increaseQuantity,
   removeFromCart,
 } from "@/redux/cart/cartSlice";
 import { toast } from "react-toastify";
+import { createOrder } from "@/api/orders";
+import { useRouter } from "next/navigation";
 
 const CartPage = () => {
   const dispatch = useDispatch();
+  const router = useRouter();
   // Corrected selector syntax
   const { products, totalPrice } = useSelector((state) => state.cart);
+  const { user } = useSelector((state) => state.auth);
   function remove(product) {
     if (confirm("Are you sure?")) {
       dispatch(removeFromCart(product));
     }
     toast.success(`${product.name} deleted successfully`);
+  }
+  function checkOut() {
+    const orderItems = products.map((product) => ({
+      product: product.id,
+      quantity: product.quantity,
+    }));
+    const orderTotalPrice = Math.ceil(totalPrice * 1.13) + 200;
+    const shippingAddress = user.address;
+    createOrder({
+      orderItems,
+      totalPrice: Math.ceil(totalPrice * 1.13) + 200,
+      shippingAddress,
+    })
+      .then(() => {
+        router.push(ORDERS_ROUTE);
+        toast.success("Order created successfully", {
+          onClose: () => {
+            dispatch(clearCart());
+          },
+        });
+      })
+      .catch((error) => {
+        toast.error(error?.response?.data);
+      });
   }
 
   return (
@@ -183,12 +212,12 @@ const CartPage = () => {
                   </dl>
                 </div>
 
-                <Link
-                  href="/checkout"
+                <button
+                  onClick={checkOut}
                   className="flex w-full items-center justify-center rounded-lg bg-primary px-5 py-2.5 text-sm font-medium text-white hover:bg-blue-600 focus:outline-none focus:ring-4 focus:ring-primary/30  dark:hover:bg-blue-700"
                 >
                   Proceed to Checkout
-                </Link>
+                </button>
               </div>
               <div className="flex items-center justify-center gap-2">
                 <span className="text-sm font-normal text-gray-500 dark:text-gray-400">
