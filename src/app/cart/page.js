@@ -22,6 +22,7 @@ import {
 import { toast } from "react-toastify";
 import { createOrder } from "@/api/orders";
 import { useRouter } from "next/navigation";
+import { ORDER_STATUS_PENDING } from "../constants/order";
 
 const CartPage = () => {
   const dispatch = useDispatch();
@@ -48,7 +49,7 @@ const CartPage = () => {
       shippingAddress,
     })
       .then(() => {
-        router.push(ORDERS_ROUTE);
+        router.push(`${ORDERS_ROUTE}?status=${ORDER_STATUS_PENDING}`);
         toast.success("Order created successfully", {
           onClose: () => {
             dispatch(clearCart());
