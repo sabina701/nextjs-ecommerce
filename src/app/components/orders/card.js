@@ -16,6 +16,7 @@ import { useRouter } from "next/navigation";
 
 const OrderCard = ({ order }) => {
   const isProductAvailable = order.orderItems.some((item) => item.product);
+
   if (!isProductAvailable) return;
   const router = useRouter();
   function cancel() {

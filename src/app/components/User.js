@@ -10,6 +10,7 @@ import {
   PROFILE_ROUTE,
 } from "../constants/routes";
 import { logout } from "@/redux/auth/authSlice";
+import { ORDER_STATUS_PENDING } from "../constants/order";
 const User = () => {
   const { user } = useSelector((state) => state.auth);
   const dispatch = useDispatch();
@@ -55,7 +56,7 @@ const User = () => {
                   Dashboard
                 </Link>
                 <Link
-                  href={ORDERS_ROUTE}
+                  href={`${ORDERS_ROUTE}?status=${ORDER_STATUS_PENDING}`}
                   className="py-1 px-4 text-gray-700 dark:text-gray-400 dark:hover-bg-gray-700 hover:bg-gray-200"
                 >
                   orders

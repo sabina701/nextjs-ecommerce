@@ -41,17 +41,17 @@ const OrderTable = ({ orders, loading }) => {
           </tr>
         </thead>
 
-        {loading ? (
-          <tr>
-            <td colSpan={8}>
-              <div className="flex items-center justify-center py-10">
-                <Spinner className="h-12 w-12 fill-primary" />
-              </div>
-            </td>
-          </tr>
-        ) : (
-          <tbody>
-            {orders.map(
+        <tbody>
+          {loading ? (
+            <tr>
+              <td colSpan={8}>
+                <div className="flex items-center justify-center py-10">
+                  <Spinner className="h-12 w-12 fill-primary" />
+                </div>
+              </td>
+            </tr>
+          ) : (
+            orders.map(
               (order) =>
                 order.orderItems.some((item) => item) && (
                   <tr
@@ -60,10 +60,11 @@ const OrderTable = ({ orders, loading }) => {
                   >
                     <th
                       scope="row"
-                      className="px-4 py-3 font-medium text-gray-900  dark:text-white"
+                      className="px-4 py-3 font-medium text-gray-900 dark:text-white"
                     >
                       #{order.orderNumber}
                     </th>
+
                     <td className="px-4 py-3">
                       {order.orderItems.map((item) => (
                         <Link
@@ -75,20 +76,24 @@ const OrderTable = ({ orders, loading }) => {
                         </Link>
                       ))}
                     </td>
+
                     <td className="px-4 py-3">Rs. {order.totalPrice}</td>
+
                     <td className="px-4 py-3">
                       <p>
                         Name:
-                        <span className="text-primary mr-2 hover:underline ">
+                        <span className="text-primary mr-2 hover:underline">
                           {order.user.name}
                         </span>
                       </p>
+
                       <p>
                         Email:
                         <span className="text-gray-900 dark:text-gray-100">
                           {order.user.email}
                         </span>
                       </p>
+
                       <p>
                         Phone:
                         <span className="text-gray-900 dark:text-gray-100">
@@ -96,26 +101,30 @@ const OrderTable = ({ orders, loading }) => {
                         </span>
                       </p>
                     </td>
+
                     <td className="px-4 py-3">
                       <p>
                         Street:{order.shippingAddress.street},
                         {order.shippingAddress.province}
                       </p>
                     </td>
+
                     <td className="px-4 py-3">
                       {format(order.createdAt, "dd MMM, yyyy")}
                     </td>
+
                     <td className="px-4 py-3">
                       <Status status={order.status} />
                     </td>
+
                     <td className="px-4 py-3">
                       <OrderAction id={order._id} status={order.status} />
                     </td>
                   </tr>
                 ),
-            )}
-          </tbody>
-        )}
+            )
+          )}
+        </tbody>
       </table>
     </div>
   );

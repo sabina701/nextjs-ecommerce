@@ -1,7 +1,11 @@
 "use client";
 import React, { useEffect } from "react";
 import Link from "next/link";
-import { REGISTER_ROUTE } from "@/app/constants/routes";
+import {
+  FORGOT_PASSWORD_ROUTE,
+  LOGIN_ROUTE,
+  REGISTER_ROUTE,
+} from "@/app/constants/routes";
 import Logo from "@/app/components/Logo";
 import { useForm } from "react-hook-form";
 import { toast } from "react-toastify";
@@ -53,13 +57,18 @@ const loginPage = () => {
 
             <PasswordInput {...register("password")} />
           </div>
-
+          <Link
+            className="p-2 inline-block  text-sm text-primary hover:underline"
+            href={FORGOT_PASSWORD_ROUTE}
+          >
+            Forgot Password
+          </Link>
           <button
             type="submit"
             disabled={loading}
             className=" flex items-center justify-center gap-3 mt-8 py-3 w-full cursor-pointer rounded-md bg-indigo-600 text-white transition hover:bg-indigo-700 disabled:opacity-80"
           >
-            login{loading && <Spinner className=" fill primary" />}
+            login{loading && <Spinner className="h-20 w-20 fill primary" />}
           </button>
 
           <p className="text-center py-8">

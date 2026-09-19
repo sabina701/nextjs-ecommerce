@@ -1,5 +1,6 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { loginUser, registerUser } from "./authAction";
+import { updateUser } from "@/api/user";
 
 const authSlice = createSlice({
   name: "auth",
@@ -14,6 +15,9 @@ const authSlice = createSlice({
     logout: (state) => {
       state.user = null;
       localStorage.removeItem("authToken");
+    },
+    setUser: (state, action) => {
+      state.user = action.payload;
     },
   },
 
@@ -51,5 +55,5 @@ const authSlice = createSlice({
       }),
 });
 
-export const { logout } = authSlice.actions;
+export const { logout, setUser } = authSlice.actions;
 export default authSlice.reducer;
