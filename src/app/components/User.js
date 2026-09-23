@@ -3,6 +3,7 @@ import React, { useState } from "react";
 import { FaUser } from "react-icons/fa";
 import { useDispatch, useSelector } from "react-redux";
 import Link from "next/link";
+import Image from "next/image";
 import {
   DASHBOARD_ROUTE,
   LOGIN_ROUTE,
@@ -27,10 +28,22 @@ const User = () => {
   return (
     <div className="relative">
       <button
-        className="text-gray-700 border-2 rounded-full h-9 min-w-9 flex items-center justify-center px-2 py-1 dark:text-gray-300 hover:text-primary cursor-pointer"
+        className="text-gray-700 border-2 rounded-full h-9 min-w-9 flex items-center justify-center dark:text-gray-300 hover:text-primary cursor-pointer"
         onClick={() => setShow(true)}
       >
-        <FaUser />
+        {user?.profileImageUrl ? (
+          <Image
+            src={user.profileImageUrl}
+            height={64}
+            width={64}
+            alt={user.name}
+            className="h-8 w-8 rounded-full "
+          />
+        ) : (
+          <div className="px-2 py-2">
+            <FaUser />
+          </div>
+        )}
       </button>
       {show && (
         <>

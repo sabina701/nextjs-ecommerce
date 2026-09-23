@@ -9,7 +9,7 @@ import AddToCart from "./AddToCart";
 const Card = ({ id, name, price, brand, category, imageUrls }) => {
   return (
     <>
-      <div className="bg-white dark:bg-gray-800 rounded-xl shadow-md overflow-hidden hover:-translate-y-1 transition duration-300">
+      <div className=" bg-white dark:bg-gray-800 rounded-xl shadow-md overflow-hidden hover:-translate-y-1 transition duration-300">
         <Link href={`${PRODUCTS_ROUTE}/${id}`} className="relative">
           {imageUrls.length > 0 ? (
             <Image
