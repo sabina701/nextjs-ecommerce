@@ -1,11 +1,12 @@
 import axios from "axios";
 import React from "react";
 import config from "@/app/config/config";
-import { FaShoppingCart, FaStar, FaRegHeart } from "react-icons/fa";
+import { FaStar, FaRegHeart } from "react-icons/fa";
 import ProductImage from "@/app/components/products/details/Image";
 import AddToCart from "@/app/components/products/details/AddToCart";
 import ProductDescription from "@/app/components/products/details/Description";
-import RecommendedProductCard from "@/app/components/products/details/RecommendedCard";
+
+import RecommendedProducts from "@/app/components/products/details/RecommendedCard";
 async function fetchById(id) {
   const response = await axios.get(`${config.apiUrl}/api/products/${id}`);
   return response.data;
@@ -75,16 +76,15 @@ const productById = async ({ params }) => {
                 Add to favorites
               </a>
 
-              <AddToCart product={product} />
+              <AddToCart product={{ id: product._id, ...product }} />
             </div>
 
             <hr className="my-6 md:my-8 border-gray-200 dark:border-gray-6--" />
             <div>
               <h4 className="text-xl font-semibold ">Recommended Products:</h4>
-              <RecommendedProductCard
-                id={id}
-                image={product.imageUrls[0]}
-                name={product.name}
+
+              <RecommendedProducts
+                id={product._id}
                 category={product.category}
               />
             </div>
